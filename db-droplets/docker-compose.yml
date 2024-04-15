@@ -1,0 +1,47 @@
+version: '3.5'
+
+services:
+  postgres-main:
+    image: postgres:latest
+    container_name: postgres-main
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: main
+      POSTGRES_PASSWORD: app-main
+    ports:
+      - "5432:5432"
+
+  postgres-develop:
+    image: postgres:latest
+    container_name: postgres-develop
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: develop
+      POSTGRES_PASSWORD: app-develop
+    ports:
+      - "5433:5432"
+
+  postgres-local:
+    image: postgres:latest
+    container_name: postgres-local
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: local
+      POSTGRES_PASSWORD: app-local
+    ports:
+      - "5434:5432"
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_storage:/data
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: aaAA11++
+    command: server --console-address ":9001" /data
+
+volumes:
+  minio_storage: {}
